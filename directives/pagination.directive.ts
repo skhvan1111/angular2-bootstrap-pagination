@@ -1,4 +1,4 @@
-import {Component, Input, Output, EventEmitter, OnInit} from "@angular/core";
+import {Component, Input, Output, EventEmitter, OnInit, OnChanges} from "@angular/core";
 import {NgModel, ControlValueAccessor} from "@angular/forms";
 //import {NgIf, NgFor, NgClass} from "@angular/common";
 
@@ -18,17 +18,17 @@ import {NgModel, ControlValueAccessor} from "@angular/forms";
 
 `
 })
-export class PaginationDirective implements ControlValueAccessor, OnInit{
+export class PaginationDirective implements ControlValueAccessor, OnInit, OnChanges{
   @Input("previous-text") previousText:string;
   @Input("next-text") nextText:string;
   @Input("first-text") firstText:string;
   @Input("last-text") lastText:string;
   @Input("totalItems") totalItems:number;
-  @Input("currentPage") cPage:number;
-  @Input("maxSize") pageSize:number;
+  @Input("currentPage") currentpage:number;
+  @Input("pageSize") pageSize:number;
   @Input("boundaryLinks") boundaryLinks:boolean;
   @Output("pageChanged") pageChanged = new EventEmitter();
-  currentpage:number;
+  // currentpage:number;
   pageList:Array<number> = [];
   private onChange: Function;
   private onTouched: Function;
@@ -38,13 +38,17 @@ export class PaginationDirective implements ControlValueAccessor, OnInit{
   private nextItemValid: boolean;
   private previousItemValid: boolean;
   
-  constructor(private pageChangedNgModel: NgModel) {
-    this.pageChangedNgModel.valueAccessor = this;
+  // constructor(private pageChangedNgModel: NgModel) {
+  //   this.pageChangedNgModel.valueAccessor = this;
    
-  }
+  // }
   ngOnInit() {
     this.doPaging();
   }
+  ngOnChanges(){
+    this.doPaging();
+  }
+
   doPaging() {
      this.pageList = [];
      var i:number,count:number;
@@ -71,12 +75,12 @@ export class PaginationDirective implements ControlValueAccessor, OnInit{
   }
   setCurrentPage(pageNo:number) {
     this.seletedPage = pageNo;
-    this.pageChangedNgModel.viewToModelUpdate(pageNo);
+    // this.pageChangedNgModel.viewToModelUpdate(pageNo);
     this.pageChageListner();
   }
   firstPage() {
      this.currentpage = 1;
-    this.pageChangedNgModel.viewToModelUpdate(1);
+    // this.pageChangedNgModel.viewToModelUpdate(1);
     this.pageChageListner();
     this.doPaging()
   }
@@ -84,20 +88,20 @@ export class PaginationDirective implements ControlValueAccessor, OnInit{
     var totalPages = (this.totalItems / this.pageSize);
     var lastPage = (totalPages) - (totalPages % this.pageSize === 0 ? this.pageSize : totalPages % this.pageSize)+1;
      this.currentpage = lastPage;
-    this.pageChangedNgModel.viewToModelUpdate(lastPage);
+    // this.pageChangedNgModel.viewToModelUpdate(lastPage);
     this.pageChageListner();
     this.doPaging()
   }
   nextPage(pageNo:number) {
     this.currentpage = pageNo;
-    this.pageChangedNgModel.viewToModelUpdate(pageNo);
+    // this.pageChangedNgModel.viewToModelUpdate(pageNo);
     this.pageChageListner();
     this.doPaging()
   }
   previousPage(pageNo:number) {
     var temp = pageNo - this.pageSize*2;
     this.currentpage = temp > 0 ?temp: 1;
-    this.pageChangedNgModel.viewToModelUpdate(this.currentpage);
+    // this.pageChangedNgModel.viewToModelUpdate(this.currentpage);
     this.pageChageListner();
     this.doPaging();
   }
