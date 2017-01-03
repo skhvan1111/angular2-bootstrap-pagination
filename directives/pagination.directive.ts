@@ -6,7 +6,7 @@ import {NgModel, ControlValueAccessor} from "@angular/forms";
   selector:'ng-pagination',
 //  directives: [NgIf, NgFor, NgClass],
   template:`
-              <ul class="pagination" >
+              <ul class="pagination" *ngIf="visible">
                   <li *ngIf="previousItemValid && firstText" (click)="firstPage()"><a [innerHTML]="firstText">First</a></li>
                   <li> <a *ngIf="previousItemValid" (click)="previousPage(nextItem)" aria-label="Previous"> <span aria-hidden="true" [innerHTML]="previousText">&laquo;</span> </a> </li>
                   <li *ngFor="let pageNo of pageList" [ngClass]="{'active':seletedPage === pageNo}">
@@ -37,7 +37,7 @@ export class PaginationDirective implements ControlValueAccessor, OnInit, OnChan
   private previousItem: number;
   private nextItemValid: boolean;
   private previousItemValid: boolean;
-  
+  private visible:boolean = true;
   // constructor(private pageChangedNgModel: NgModel) {
   //   this.pageChangedNgModel.valueAccessor = this;
    
@@ -53,11 +53,16 @@ export class PaginationDirective implements ControlValueAccessor, OnInit, OnChan
      this.pageList = [];
      var i:number,count:number;
      this.seletedPage = this.currentpage;
-     var remaining = this.totalItems % this.pageSize;
-    var totalSize =((this.totalItems-remaining) / this.pageSize)+(remaining ===0 ? 0 : 1);
-    for (i = (this.currentpage), count=0; i<= totalSize && count<this.pageSize; i++, count++) {
-      this.pageList.push(i);
-    }
+
+     this.visible = this.totalItems >= this.pageSize;
+
+      var remaining = this.totalItems % this.pageSize;
+      var totalSize =((this.totalItems-remaining) / this.pageSize)+(remaining ===0 ? 0 : 1);
+      for (i = (this.currentpage), count=0; i<= totalSize && count<this.pageSize; i++, count++) {
+          this.pageList.push(i);
+      }
+
+     
     //next validation
     if(i-1<totalSize) {
       this.nextItemValid = true;
@@ -123,7 +128,7 @@ export class PaginationDirective implements ControlValueAccessor, OnInit, OnChan
   }
   pageChageListner() {
     this.pageChanged.emit({
-      currentPage: this.currentpage
+      currentPage: this.seletedPage
     })
   }
 }
