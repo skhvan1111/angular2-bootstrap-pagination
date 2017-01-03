@@ -54,7 +54,7 @@ export class PaginationDirective implements ControlValueAccessor, OnInit, OnChan
      var i:number,count:number;
      this.seletedPage = this.currentpage;
 
-     this.visible = this.totalItems >= this.pageSize;
+     this.visible = this.totalItems > this.pageSize;
 
       var remaining = this.totalItems % this.pageSize;
       var totalSize =((this.totalItems-remaining) / this.pageSize)+(remaining ===0 ? 0 : 1);
