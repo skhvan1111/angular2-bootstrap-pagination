@@ -45,7 +45,7 @@ export class PaginationDirective implements ControlValueAccessor, OnInit, OnChan
   ngOnInit() {
     this.doPaging();
   }
-  ngOnChanges(){
+  ngOnChanges(e:any){
     this.doPaging();
   }
 
