@@ -37,7 +37,7 @@ export class PaginationDirective implements ControlValueAccessor, OnInit, OnChan
   private previousItem: number;
   private nextItemValid: boolean;
   private previousItemValid: boolean;
-  private visible:boolean = true;
+  visible:boolean = true;
   // constructor(private pageChangedNgModel: NgModel) {
   //   this.pageChangedNgModel.valueAccessor = this;
    
